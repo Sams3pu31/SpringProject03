@@ -1,8 +1,8 @@
 package com.myproject.library.service;
 
-import com.myproject.library.dto.GenreDto;
+import com.myproject.library.dto.GenreResponseDto;
 
 public interface GenreService {
-    GenreDto getGenreById(Long id);
+    GenreResponseDto getGenreById(Long id);
 }
 

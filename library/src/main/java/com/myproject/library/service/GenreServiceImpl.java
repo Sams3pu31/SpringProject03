@@ -2,7 +2,7 @@ package com.myproject.library.service;
 
 import com.myproject.library.dto.AuthorDto;
 import com.myproject.library.dto.BookDto;
-import com.myproject.library.dto.GenreDto;
+import com.myproject.library.dto.GenreResponseDto;
 import com.myproject.library.model.Genre;
 import com.myproject.library.repository.GenreRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +18,12 @@ public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
 
     @Override
-    public GenreDto getGenreById(Long id) {
+    public GenreResponseDto getGenreById(Long id) {
         Genre genre = genreRepository.findById(id).orElseThrow();
         return convertToDto(genre);
     }
 
-    private GenreDto convertToDto(Genre genre) {
+    private GenreResponseDto convertToDto(Genre genre) {
         List<BookDto> bookDtoList = genre.getBooks()
                 .stream()
                 .map(book -> {
@@ -44,13 +44,10 @@ public class GenreServiceImpl implements GenreService {
                 })
                 .collect(Collectors.toList());
 
-        return GenreDto.builder()
+        return GenreResponseDto.builder()
                 .id(genre.getId())
                 .genre(genre.getName())
                 .books(bookDtoList)
                 .build();
     }
-
 }
-
-
