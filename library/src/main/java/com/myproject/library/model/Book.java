@@ -1,11 +1,8 @@
 package com.myproject.library.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
+import lombok.Setter;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -19,10 +16,12 @@ public class Book {
     private Long id;
 
     @Column(nullable = false)
+    @Setter
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
+    @Setter
     private Genre genre;
 
     @ManyToMany
@@ -30,6 +29,7 @@ public class Book {
             name = "author_book",
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"),
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
+    @Setter
     private Set<Author> authors;
 
 }

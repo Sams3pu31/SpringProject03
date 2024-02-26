@@ -1,6 +1,9 @@
 package com.myproject.library.service;
 
+import com.myproject.library.dto.BookCreateDto;
 import com.myproject.library.dto.BookDto;
+import com.myproject.library.dto.BookUpdateDto;
+import com.myproject.library.model.Genre;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -40,11 +43,42 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findOne(specification).orElseThrow();
         return convertEntityToDto(book);
     }
+    @Override
+    public BookDto createBook(BookCreateDto bookCreateDto) {
+        Book book = convertDtoToEntity(bookCreateDto);
+        book = bookRepository.save(book);
+        return convertEntityToDto(book);
+    }
+
+    @Override
+    public BookDto updateBook(BookUpdateDto bookUpdateDto) {
+        Book book = bookRepository.findById(bookUpdateDto.getId()).orElseThrow();
+        book.setName(bookUpdateDto.getName());
+        book = bookRepository.save(book);
+        return convertEntityToDto(book);
+    }
+
+    @Override
+    public void deleteBook(Long id) {
+        bookRepository.deleteById(id);
+    }
     private BookDto convertEntityToDto(Book book) {
         return BookDto.builder()
                 .id(book.getId())
                 .genre(book.getGenre().getName())
                 .name(book.getName())
                 .build();
+    }
+
+    private Book convertDtoToEntity(BookCreateDto bookCreateDto) {
+        Book book = new Book();
+        book.setName(bookCreateDto.getName());
+
+        // Установка жанра книги
+        Genre genre = new Genre();
+        genre.setId(bookCreateDto.getGenreId());
+        book.setGenre(genre);
+
+        return book;
     }
 }
