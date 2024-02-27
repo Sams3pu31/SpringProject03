@@ -8,6 +8,7 @@
 <body>
     <div class="container">
         <h2>AUTHORS</h2>
+        <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
         <ul class="responsive-table">
             <li class="table-header">
                 <div class="col col-1">ID</div>
@@ -23,5 +24,11 @@
             </#list>
         </ul>
     </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
 </body>
 </html>
