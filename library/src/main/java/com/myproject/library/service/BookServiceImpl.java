@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import com.myproject.library.model.Book;
 import com.myproject.library.repository.BookRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
@@ -78,5 +81,10 @@ public class BookServiceImpl implements BookService {
         book.setGenre(genre);
 
         return book;
+    }
+    @Override
+    public List<BookDto> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 }

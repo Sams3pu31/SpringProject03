@@ -4,6 +4,8 @@ import com.myproject.library.dto.AuthorCreateDto;
 import com.myproject.library.dto.AuthorDto;
 import com.myproject.library.dto.AuthorUpdateDto;
 
+import java.util.List;
+
 
 public interface AuthorService {
     AuthorDto getAuthorById(Long id);
@@ -17,6 +19,8 @@ public interface AuthorService {
     AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto);
 
     void deleteAuthor(Long id);
+
+    List<AuthorDto> getAllAuthors();
 }
 
 
