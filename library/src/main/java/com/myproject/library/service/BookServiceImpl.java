@@ -73,8 +73,6 @@ public class BookServiceImpl implements BookService {
     private Book convertDtoToEntity(BookCreateDto bookCreateDto) {
         Book book = new Book();
         book.setName(bookCreateDto.getName());
-
-        // Установка жанра книги
         Genre genre = new Genre();
         genre.setId(bookCreateDto.getGenreId());
         book.setGenre(genre);
