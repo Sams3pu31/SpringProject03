@@ -73,8 +73,8 @@
     <changeSet id="insert_users" author="author name">
         <sql>
             INSERT INTO users (username, password, roles) VALUES
-            ('user', 'password', 'USER'),
-            ('admin', 'password', 'ADMIN,USER');
+            ('user', '$2a$12$NySXNleUoUU9m1ZFRrrdWOjtX3/tYf4/5Ab5uoywm/WFFNRHowiDi', 'USER'),
+            ('admin', '$2a$12$NySXNleUoUU9m1ZFRrrdWOjtX3/tYf4/5Ab5uoywm/WFFNRHowiDi', 'ADMIN,USER');
         </sql>
     </changeSet>
 
