@@ -60,27 +60,23 @@
 
         </sql>
     </changeSet>
-
-    <changeSet id="add_users_table" author="author name">
-        <createTable tableName="users">
-            <column name="id" type="BIGSERIAL">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="username" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
+    <changeSet id="create_users_table" author="author name">
         <sql>
-            INSERT INTO users(username, password, role) VALUES
-            ('user', '{bcrypt}$2a$10$UrNuIgO.xuSiFKBfReBPgur/ZHEBK.5HZfvnCigFj5RZkk5mK2X2a', 'ROLE_USER'),
-            ('admin', '{bcrypt}$2a$10$UrNuIgO.xuSiFKBfReBPgur/ZHEBK.5HZfvnCigFj5RZkk5mK2X2a', 'ROLE_ADMIN');
+            CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            username VARCHAR(50) UNIQUE NOT NULL,
+            password VARCHAR(100) NOT NULL,
+            roles VARCHAR(100) NOT NULL
+            );
         </sql>
     </changeSet>
+    <changeSet id="insert_users" author="author name">
+        <sql>
+            INSERT INTO users (username, password, roles) VALUES
+            ('user', 'password', 'USER'),
+            ('admin', 'password', 'ADMIN,USER');
+        </sql>
+    </changeSet>
+
+
 </databaseChangeLog>
