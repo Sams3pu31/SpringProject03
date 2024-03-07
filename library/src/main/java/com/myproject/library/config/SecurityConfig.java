@@ -29,7 +29,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Используйте NoOpPasswordEncoder для хранения паролей в незашифрованном виде
         return NoOpPasswordEncoder.getInstance();
     }
 }

@@ -27,11 +27,11 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        // Создаем объект UserDetails на основе информации о пользователе из базы данных
+
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
-                .password(user.getPassword()) // Пароль должен быть закодирован
-                .roles(user.getRoles().split(",")) // Роли пользователя
+                .password(user.getPassword())
+                .roles(user.getRoles().split(","))
                 .build();
     }
 
