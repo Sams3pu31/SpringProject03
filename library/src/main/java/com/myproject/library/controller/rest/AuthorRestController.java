@@ -4,6 +4,7 @@ import com.myproject.library.dto.AuthorCreateDto;
 import com.myproject.library.dto.AuthorDto;
 import com.myproject.library.dto.AuthorUpdateDto;
 import com.myproject.library.service.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class AuthorRestController {
         return authorService.getAuthorByNameV3(name);
     }
     @PostMapping("/author/create")
-    AuthorDto createAuthor(@RequestBody AuthorCreateDto authorCreateDto) {
+    AuthorDto createAuthor(@RequestBody @Valid AuthorCreateDto authorCreateDto) {
         return authorService.createAuthor(authorCreateDto);
     }
     @PutMapping("/author/update")
