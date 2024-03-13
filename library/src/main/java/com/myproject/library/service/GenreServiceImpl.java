@@ -6,6 +6,7 @@ import com.myproject.library.dto.GenreResponseDto;
 import com.myproject.library.model.Genre;
 import com.myproject.library.repository.GenreRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +14,16 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
 
     @Override
     public GenreResponseDto getGenreById(Long id) {
+        log.info("Trying to find genre by ID: {}", id);
         Genre genre = genreRepository.findById(id).orElseThrow();
+        log.info("Genre found: {}", genre);
         return convertToDto(genre);
     }
 

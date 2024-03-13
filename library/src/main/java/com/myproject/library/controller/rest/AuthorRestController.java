@@ -4,12 +4,17 @@ import com.myproject.library.dto.AuthorCreateDto;
 import com.myproject.library.dto.AuthorDto;
 import com.myproject.library.dto.AuthorUpdateDto;
 import com.myproject.library.service.AuthorService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "library-users")
+@ApiResponse
 public class AuthorRestController {
 
     private final AuthorService authorService;
@@ -35,7 +40,7 @@ public class AuthorRestController {
         return authorService.createAuthor(authorCreateDto);
     }
     @PutMapping("/author/update")
-    AuthorDto updateAuthor(@RequestBody AuthorUpdateDto authorUpdateDto) {
+    AuthorDto updateAuthor(@RequestBody @Valid AuthorUpdateDto authorUpdateDto) {
         return authorService.updateAuthor(authorUpdateDto);
     }
     @DeleteMapping("/author/delete/{id}")

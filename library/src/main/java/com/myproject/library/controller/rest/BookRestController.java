@@ -1,14 +1,19 @@
 package com.myproject.library.controller.rest;
 
 import com.myproject.library.dto.BookCreateDto;
+import com.myproject.library.dto.BookDto;
 import com.myproject.library.dto.BookUpdateDto;
+import com.myproject.library.service.BookService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import com.myproject.library.dto.BookDto;
-import com.myproject.library.service.BookService;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "library-users")
+@ApiResponse
 public class BookRestController {
 
     private final BookService bookService;
@@ -26,11 +31,11 @@ public class BookRestController {
         return bookService.getByNameV3(name);
     }
     @PostMapping("/book/create")
-    BookDto createBook(@RequestBody BookCreateDto bookCreateDto) {
+    BookDto createBook(@RequestBody @Valid BookCreateDto bookCreateDto) {
         return bookService.createBook(bookCreateDto);
     }
     @PutMapping("/book/update")
-    BookDto updateBook(@RequestBody BookUpdateDto bookUpdateDto) {
+    BookDto updateBook(@RequestBody @Valid BookUpdateDto bookUpdateDto) {
         return bookService.updateBook(bookUpdateDto);
     }
     @DeleteMapping("/book/delete/{id}")
