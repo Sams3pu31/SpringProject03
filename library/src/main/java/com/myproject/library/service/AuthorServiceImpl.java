@@ -47,12 +47,12 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorDto getAuthorByNameV1(String name) {
         log.info("Try to find author by name: {}", name);
         List<Author> authors = authorRepository.findAuthorsByName(name);
-        AuthorDto authorDto = convertToDto(authors);
-        if (authorDto != null) {
-            log.info("Author found: {}", authorDto.toString());
-        } else {
+        if (authors.isEmpty()) {
             log.error("Author with name {} not found", name);
+            throw new NoSuchElementException("Author with name " + name + " not found");
         }
+        AuthorDto authorDto = convertToDto(authors);
+        log.info("Author found: {}", authorDto.toString());
         return authorDto;
     }
 
@@ -61,35 +61,44 @@ public class AuthorServiceImpl implements AuthorService {
         log.info("Try to find author by name using query: {}", name);
         List<Author> authors = authorRepository.findAuthorsByNameUsingQuery(name);
         AuthorDto authorDto = convertToDto(authors);
-        if (authorDto != null) {
-            log.info("Author found: {}", authorDto.toString());
-        } else {
+        if (authorDto == null) {
             log.error("Author with name {} not found", name);
+            throw new NoSuchElementException("Author with name " + name + " not found");
+        } else {
+            log.info("Author found: {}", authorDto.toString());
         }
         return authorDto;
     }
+
 
     @Override
     public AuthorDto getAuthorByNameV3(String name) {
         log.info("Try to find author by name using named query: {}", name);
         List<Author> authors = authorRepository.findByName(name);
         AuthorDto authorDto = convertToDto(authors);
-        if (authorDto != null) {
-            log.info("Author found: {}", authorDto.toString());
-        } else {
+        if (authorDto == null) {
             log.error("Author with name {} not found", name);
+            throw new NoSuchElementException("Author with name " + name + " not found");
+        } else {
+            log.info("Author found: {}", authorDto.toString());
         }
         return authorDto;
     }
 
     @Override
     public AuthorDto createAuthor(AuthorCreateDto authorCreateDto) {
+        if (authorCreateDto == null) {
+            log.error("AuthorCreateDto is null");
+            throw new IllegalArgumentException("AuthorCreateDto cannot be null");
+        }
+
         log.info("Creating author: {}", authorCreateDto.toString());
         Author author = authorRepository.save(convertDtoToEntity(authorCreateDto));
         AuthorDto authorDto = convertEntityToDto(author);
         log.info("Author created: {}", authorDto.toString());
         return authorDto;
     }
+
 
     @Override
     public AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto) {
@@ -102,6 +111,7 @@ public class AuthorServiceImpl implements AuthorService {
         log.info("Author updated: {}", updatedAuthorDto.toString());
         return updatedAuthorDto;
     }
+
 
 
     @Override

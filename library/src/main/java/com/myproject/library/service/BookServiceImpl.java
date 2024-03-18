@@ -16,6 +16,8 @@ import com.myproject.library.model.Book;
 import com.myproject.library.repository.BookRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,19 +43,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto getByNameV3(String name) {
         log.info("Trying to find book by name using specification (V3): {}", name);
-        Specification<Book> specification = Specification.where(new Specification<Book>() {
-            @Override
-            public Predicate toPredicate(Root<Book> root,
-                                         CriteriaQuery<?> query,
-                                         CriteriaBuilder cb) {
-                return cb.equal(root.get("name"), name);
-            }
-        });
+        Specification<Book> specification = (root, query, cb) -> cb.equal(root.get("name"), name);
+        Optional<Book> optionalBook = bookRepository.findOne(specification);
+        Book book = optionalBook.orElseThrow(() -> new NoSuchElementException("Book not found with name: " + name));
 
-        Book book = bookRepository.findOne(specification).orElseThrow();
         log.info("Book found: {}", book);
         return convertEntityToDto(book);
     }
+
     @Override
     public BookDto createBook(BookCreateDto bookCreateDto) {
         log.info("Creating book: {}", bookCreateDto);
@@ -80,12 +77,23 @@ public class BookServiceImpl implements BookService {
         log.info("Book deleted with ID: {}", id);
     }
 
-    private BookDto convertEntityToDto(Book book) {
-        return BookDto.builder()
-                .id(book.getId())
-                .genre(book.getGenre().getName())
-                .name(book.getName())
-                .build();
+    public BookDto convertEntityToDto(Book book) {
+        if (book == null) {
+            return null;
+        }
+
+        BookDto bookDto = new BookDto();
+        bookDto.setId(book.getId());
+        bookDto.setName(book.getName());
+
+        if (book.getGenre() != null) {
+            bookDto.setGenre(book.getGenre().getName());
+        } else {
+            bookDto.setGenre(null);
+        }
+
+
+        return bookDto;
     }
 
     private Book convertDtoToEntity(BookCreateDto bookCreateDto) {
